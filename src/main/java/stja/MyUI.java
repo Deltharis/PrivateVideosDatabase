@@ -7,15 +7,17 @@ import com.vaadin.cdi.CDIUI;
 import com.vaadin.cdi.server.VaadinCDIServlet;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import stja.control.Roles;
 import stja.control.SearchTablePresenter;
+import stja.ui.ErrorView;
+import stja.ui.LoginView;
 import stja.ui.SearchPanelAndTable;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.annotation.WebServlet;
 
@@ -39,6 +41,22 @@ public class MyUI extends UI {
         setContent(mainLayout);
 
         initComponents();
+        navigator = new Navigator (this, this);
+
+        navigator.setErrorView(new ErrorView());
+
+        Subject currentUser = SecurityUtils.getSubject();
+        if (currentUser.isAuthenticated() || currentUser.isRemembered()) { //hence a check on both variables is required
+            if (currentUser.hasRole(Roles.MANAGER)) {
+                navigator.addView("dashboard", new ManagerView());
+            } else if (currentUser.hasRole(Roles.USER)) {
+                navigator.addView("dashboard", new SearchPanelAndTable(searchTablePresenter));
+            }
+            navigator.navigateTo("dashboard");
+        } else {
+            navigator.addView("", new LoginView());
+            navigator.navigateTo("");
+        }
     }
 
     private void initComponents() {
