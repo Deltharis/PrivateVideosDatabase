@@ -1,6 +1,8 @@
 package stja.ui;
 
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
 import org.tepi.filtertable.FilterTable;
 import stja.control.SearchTablePresenter;
@@ -10,7 +12,7 @@ import stja.entities.video.Video;
 /**
  * Created by Michal on 2015-10-17.
  */
-public class SearchPanelAndTable extends Panel {
+public class SearchPanelAndTable extends Panel implements View {
 
     private SearchTablePresenter presenter;
     private VerticalLayout mainLayout = new VerticalLayout();
@@ -61,6 +63,7 @@ public class SearchPanelAndTable extends Panel {
         table.setImmediate(true);
         table.setSelectable(true);
         table.setMultiSelect(false);
+        table.setSortEnabled(true);
 
         refreshTable();
 
@@ -154,5 +157,10 @@ public class SearchPanelAndTable extends Panel {
     private void refreshTable(){
         container.removeAllItems();
         container.addAll(presenter.getAllVideos());
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+
     }
 }
