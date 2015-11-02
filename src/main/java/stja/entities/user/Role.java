@@ -29,6 +29,18 @@ public class Role implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
     private Set<User> users;
 
+    public Role() {
+    }
+
+    public Role(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public Role(String roleName, Set<Permission> permissions) {
+        this.roleName = roleName;
+        this.permissions = permissions;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -61,6 +73,13 @@ public class Role implements Serializable {
         this.users = users;
     }
 
-    // ... getters and setters ...
 
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", roleName='" + roleName + '\'' +
+                ", permissions=" + permissions +
+                '}';
+    }
 }

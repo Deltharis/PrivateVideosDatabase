@@ -4,7 +4,10 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.tepi.filtertable.FilterTable;
+import stja.control.Permissions;
 import stja.control.SearchTablePresenter;
 import stja.data_access.TagRanking;
 import stja.entities.video.Video;
@@ -161,6 +164,18 @@ public class SearchPanelAndTable extends Panel implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+        Subject currentUser = SecurityUtils.getSubject();
+        if (currentUser.isPermitted(Permissions.FILM_MANAGER)) {
+            addButton.setVisible(true);
+            deleteButton.setVisible(true);
+            editButton.setVisible(true);
+            addTag.setVisible(true);
+        } else {
+            addButton.setVisible(false);
+            deleteButton.setVisible(false);
+            editButton.setVisible(false);
+            addTag.setVisible(false);
+        }
 
     }
 }

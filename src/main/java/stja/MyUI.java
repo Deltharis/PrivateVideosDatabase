@@ -12,10 +12,13 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import stja.control.ManagerPresenter;
+import stja.control.Permissions;
 import stja.control.Roles;
 import stja.control.SearchTablePresenter;
 import stja.ui.ErrorView;
 import stja.ui.LoginView;
+import stja.ui.ManagerView;
 import stja.ui.SearchPanelAndTable;
 
 import javax.inject.Inject;
@@ -33,6 +36,8 @@ public class MyUI extends UI {
     Navigator navigator;
     @Inject
     private SearchTablePresenter searchTablePresenter;
+    @Inject
+    private ManagerPresenter managerPresenter;
     private VerticalLayout mainLayout;
 
     @Override
@@ -46,16 +51,29 @@ public class MyUI extends UI {
         navigator.setErrorView(new ErrorView());
 
         Subject currentUser = SecurityUtils.getSubject();
-        if (currentUser.isAuthenticated() || currentUser.isRemembered()) { //hence a check on both variables is required
-            if (currentUser.hasRole(Roles.MANAGER)) {
-                navigator.addView("dashboard", new ManagerView());
-            } else if (currentUser.hasRole(Roles.USER)) {
-                navigator.addView("dashboard", new SearchPanelAndTable(searchTablePresenter));
+        if (currentUser.isAuthenticated() || currentUser.isRemembered()) {
+            if (currentUser.isPermitted(Permissions.MANAGER)) {
+                navigator.addView("manager", new ManagerView(managerPresenter));
             }
-            navigator.navigateTo("dashboard");
+            if (currentUser.hasRole(Roles.USER)) {
+                navigator.addView("main", new SearchPanelAndTable(searchTablePresenter));
+            }
+            navigateToCorrectThing(currentUser);
         } else {
-            navigator.addView("", new LoginView());
+            navigator.addView("", new LoginView(searchTablePresenter, managerPresenter));
             navigator.navigateTo("");
+        }
+    }
+
+    private void navigateToCorrectThing(Subject subject) {
+        if (subject.isPermitted(Permissions.MANAGER)) {
+            navigator.navigateTo("manager");
+        } else if (subject.isPermitted(Permissions.USER)) {
+            navigator.navigateTo("main");
+        } else if (subject.isPermitted(Permissions.FILM_MANAGER)) {
+            throw new RuntimeException("WTF, not user but film manager");
+        } else {
+            throw new RuntimeException("NOPE, no permissions but logged in, bad user, bad " + subject.getPrincipal());
         }
     }
 

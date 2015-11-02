@@ -22,6 +22,13 @@ public class Permission implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "permissions")
     private Set<Role> roles;
 
+    public Permission() {
+    }
+
+    public Permission(String permission) {
+        this.permission = permission;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -44,5 +51,13 @@ public class Permission implements Serializable {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "Permission{" +
+                "id=" + id +
+                ", permission='" + permission + '\'' +
+                '}';
     }
 }

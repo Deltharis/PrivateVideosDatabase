@@ -1,7 +1,5 @@
 package stja.entities.user;
 
-import stja.entities.video.Tag;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -26,13 +24,21 @@ public class User implements Serializable {
 
     @Column(name = "salt", length = 128)
     private String salt;
-
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "UserRole", joinColumns = {
             @JoinColumn(name = "userId", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "roleId",
                     nullable = false, updatable = false)})
+
+
     private Set<Role> roles;
+
+    public User() {
+    }
+
+    public User(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     public Integer getId() {
         return id;
@@ -72,5 +78,14 @@ public class User implements Serializable {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }
