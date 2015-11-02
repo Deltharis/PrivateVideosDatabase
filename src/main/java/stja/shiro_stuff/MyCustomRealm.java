@@ -7,6 +7,8 @@ import org.apache.shiro.realm.jdbc.JdbcRealm;
 import stja.data_access.UserDAO;
 import stja.entities.user.User;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 
@@ -17,9 +19,12 @@ public class MyCustomRealm extends JdbcRealm {
 
     private UserDAO userDAO;
 
-    public MyCustomRealm(UserDAO userDAO) {
-        this.userDAO = userDAO;
-
+    public MyCustomRealm() {
+        try {
+            userDAO = (UserDAO) new InitialContext().lookup("java:module/UserDAO");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
         HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
         matcher.setHashAlgorithmName("Sha256Hash");
         matcher.setStoredCredentialsHexEncoded(false);
