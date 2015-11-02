@@ -6,12 +6,14 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import stja.entities.user.Role;
 import stja.entities.user.User;
 
+import javax.ejb.Stateless;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Created by Delth on 26.10.2015.
  */
+@Stateless
 public class UserDAO extends AbstractDAO<User> {
     @Override
     protected Class<User> getEntityClass() {

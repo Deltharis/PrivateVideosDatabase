@@ -84,11 +84,6 @@ public class SearchPanelAndTable extends Panel implements View {
         mainLayout.addComponent(table2);
     }
 
-    private void refreshCount() {
-        container2.removeAllItems();
-        container2.addAll(presenter.getRanking());
-    }
-
     private void addListeners() {
         addButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent clickEvent) {
@@ -162,6 +157,11 @@ public class SearchPanelAndTable extends Panel implements View {
         container.addAll(presenter.getAllVideos());
     }
 
+    private void refreshCount() {
+        container2.removeAllItems();
+        container2.addAll(presenter.getRanking());
+    }
+
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         Subject currentUser = SecurityUtils.getSubject();
@@ -176,6 +176,8 @@ public class SearchPanelAndTable extends Panel implements View {
             editButton.setVisible(false);
             addTag.setVisible(false);
         }
+        refreshTable();
+        refreshCount();
 
     }
 }

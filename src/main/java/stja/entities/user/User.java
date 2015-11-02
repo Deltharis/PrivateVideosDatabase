@@ -24,13 +24,12 @@ public class User implements Serializable {
 
     @Column(name = "salt", length = 128)
     private String salt;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "UserRole", joinColumns = {
             @JoinColumn(name = "userId", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "roleId",
                     nullable = false, updatable = false)})
-
-
     private Set<Role> roles;
 
     public User() {
