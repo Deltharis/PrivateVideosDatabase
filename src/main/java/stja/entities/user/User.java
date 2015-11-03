@@ -1,5 +1,7 @@
 package stja.entities.user;
 
+import com.google.gwt.thirdparty.guava.common.collect.Sets;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -8,7 +10,7 @@ import java.util.Set;
  * Created by Delth on 26.10.2015.
  */
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 public class User implements Serializable {
 
     @Id
@@ -26,9 +28,9 @@ public class User implements Serializable {
     private String salt;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "UserRole", joinColumns = {
-            @JoinColumn(name = "userId", nullable = false, updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "roleId",
+    @JoinTable(name = "user_role", joinColumns = {
+            @JoinColumn(name = "user_id", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "role_id",
                     nullable = false, updatable = false)})
     private Set<Role> roles;
 
@@ -37,6 +39,13 @@ public class User implements Serializable {
 
     public User(Set<Role> roles) {
         this.roles = roles;
+        for (Role r : roles) {
+            if (r.getUsers() == null) {
+                r.setUsers(Sets.newHashSet(this));
+            } else {
+                r.getUsers().add(this);
+            }
+        }
     }
 
     public Integer getId() {
@@ -84,6 +93,8 @@ public class User implements Serializable {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", salt='" + salt + '\'' +
                 ", roles=" + roles +
                 '}';
     }

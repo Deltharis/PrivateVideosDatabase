@@ -14,7 +14,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import stja.control.ManagerPresenter;
 import stja.control.Permissions;
-import stja.control.Roles;
 import stja.control.SearchTablePresenter;
 import stja.ui.ErrorView;
 import stja.ui.LoginView;
@@ -46,16 +45,36 @@ public class MyUI extends UI {
         setContent(mainLayout);
 
         initComponents();
-        navigator = new Navigator (this, this);
+        navigator = new Navigator(this, this);
 
         navigator.setErrorView(new ErrorView());
 
+        /*managerPresenter.createUser(
+                "admin",
+                "admin",
+                Sets.newHashSet
+                        (new Role
+                                        ("UserManager",
+                                                Sets.newHashSet(
+                                                        new Permission(
+                                                                Permissions.MANAGER
+                                                        ))
+                                        ),
+                                new Role(
+                                        "SiteAdmin", Sets.newHashSet(
+                                        new Permission(
+                                                Permissions.FILM_MANAGER
+                                        ),
+                                        new Permission(Permissions.USER)
+                                ))
+                        )
+        );*/
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.isAuthenticated() || currentUser.isRemembered()) {
             if (currentUser.isPermitted(Permissions.MANAGER)) {
                 navigator.addView("manager", new ManagerView(managerPresenter));
             }
-            if (currentUser.hasRole(Roles.USER)) {
+            if (currentUser.isPermitted(Permissions.USER)) {
                 navigator.addView("main", new SearchPanelAndTable(searchTablePresenter));
             }
             navigateToCorrectThing(currentUser);

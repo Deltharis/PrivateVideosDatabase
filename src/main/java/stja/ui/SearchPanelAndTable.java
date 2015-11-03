@@ -49,10 +49,19 @@ public class SearchPanelAndTable extends Panel implements View {
         editButton.setImmediate(true);
         addTag = new Button("Dodaj Tag lub osobę");
         addTag.setImmediate(true);
+        Button logoutButton = new Button("Log out");
+        logoutButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                SecurityUtils.getSubject().logout();
+                getUI().getNavigator().navigateTo("");
+            }
+        });
         crudLayout.addComponent(addButton);
         crudLayout.addComponent(deleteButton);
         crudLayout.addComponent(editButton);
         crudLayout.addComponent(addTag);
+        crudLayout.addComponent(logoutButton);
         crudLayout.setSpacing(true);
         table = new FilterTable();
         table.setSizeFull();

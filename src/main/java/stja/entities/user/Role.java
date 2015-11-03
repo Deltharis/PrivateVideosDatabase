@@ -1,5 +1,7 @@
 package stja.entities.user;
 
+import com.google.gwt.thirdparty.guava.common.collect.Sets;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -8,7 +10,7 @@ import java.util.Set;
  * Created by Delth on 26.10.2015.
  */
 @Entity
-@Table(name = "Role")
+@Table(name = "role")
 public class Role implements Serializable {
 
     @Id
@@ -16,13 +18,13 @@ public class Role implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "roleName", length = 30)
+    @Column(name = "role_name", length = 30)
     private String roleName;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "RolePermission", joinColumns = {
-            @JoinColumn(name = "roleId", nullable = false, updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "permissionId",
+    @JoinTable(name = "role_permission", joinColumns = {
+            @JoinColumn(name = "role_id", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "permission_id",
                     nullable = false, updatable = false)})
     private Set<Permission> permissions;
 
@@ -39,6 +41,13 @@ public class Role implements Serializable {
     public Role(String roleName, Set<Permission> permissions) {
         this.roleName = roleName;
         this.permissions = permissions;
+        for (Permission p : permissions) {
+            if (p.getRoles() == null) {
+                p.setRoles(Sets.newHashSet(this));
+            } else {
+                p.getRoles().add(this);
+            }
+        }
     }
 
     public Integer getId() {

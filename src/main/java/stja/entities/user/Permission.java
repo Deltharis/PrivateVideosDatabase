@@ -8,7 +8,7 @@ import java.util.Set;
  * Created by Delth on 26.10.2015.
  */
 @Entity
-@Table(name = "Permission")
+@Table(name = "permission")
 public class Permission implements Serializable {
 
     @Id

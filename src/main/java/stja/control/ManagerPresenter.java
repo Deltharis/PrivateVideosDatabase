@@ -5,6 +5,7 @@ import stja.data_access.RoleDAO;
 import stja.data_access.UserDAO;
 import stja.entities.user.Permission;
 import stja.entities.user.Role;
+import stja.entities.user.User;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -31,12 +32,20 @@ public class ManagerPresenter {
         userDAO.registerUser(user, password, roles);
     }
 
+    public void changePassword(User user, String password) {
+        userDAO.changePassword(user, password);
+    }
+
     public void createRola(Role rola) {
-        roleDAO.persist(rola);
+        roleDAO.merge(rola);
     }
 
     public void createPermission(Permission permission) {
-        permissionDAO.persist(permission);
+        permissionDAO.merge(permission);
+    }
+
+    public List<User> getUsers() {
+        return userDAO.getAll();
     }
 
     public List<Role> getRoles() {

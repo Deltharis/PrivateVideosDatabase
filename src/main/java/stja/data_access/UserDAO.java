@@ -38,7 +38,7 @@ public class UserDAO extends AbstractDAO<User> {
 
         generatePassword(user, plainTextPassword);
 
-        super.persist(user);
+        merge(user);
     }
 
     private void generatePassword(User user, String plainTextPassword) {
@@ -51,5 +51,10 @@ public class UserDAO extends AbstractDAO<User> {
 
         user.setPassword(hashedPasswordBase64);
         user.setSalt(salt.toString());
+    }
+
+    public void changePassword(User user, String password) {
+        generatePassword(user, password);
+        merge(user);
     }
 }

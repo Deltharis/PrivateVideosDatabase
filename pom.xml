@@ -182,7 +182,7 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <packagingExcludes>VAADIN/gwt-unitCache/**,
                         VAADIN/widgetsets/WEB-INF/**</packagingExcludes>
-                    <outputDirectory>../STJA2/stja2/deployments</outputDirectory>
+                    <outputDirectory>../STJA/stja/deployments</outputDirectory>
               		  <warName>ROOT</warName>
                 </configuration>
             </plugin>

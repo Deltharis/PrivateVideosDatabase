@@ -24,15 +24,15 @@ public class MyCustomRealm extends JdbcRealm {
             e.printStackTrace();
         }
         HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
-        matcher.setHashAlgorithmName("Sha256Hash");
+        matcher.setHashAlgorithmName("SHA-256");
         matcher.setStoredCredentialsHexEncoded(false);
         matcher.setHashIterations(1024);
         setCredentialsMatcher(matcher);
 
-        setAuthenticationQuery("SELECT password, salt FROM User WHERE username = ?");
+        setAuthenticationQuery("SELECT password, salt FROM user WHERE username = ?");
         setPermissionsLookupEnabled(true);
-        setUserRolesQuery("select r.rolename from role r inner join UserRole ur on r.id = ur.roleId inner join User u on ur.userId = u.id where u.username = ?");
-        setPermissionsQuery("select p.permission from Permission p inner join RolePermission rp on p.id = rp.permissionId inner join Role r on rp.roleId = r.id where r.roleName = ?");
+        setUserRolesQuery("select r.role_name from role r inner join user_role ur on r.id = ur.role_id inner join user u on ur.user_id = u.id where u.username = ?");
+        setPermissionsQuery("select p.permission from permission p inner join role_permission rp on p.id = rp.permission_id inner join role r on rp.role_id = r.id where r.role_name = ?");
     }
 
     @Override
