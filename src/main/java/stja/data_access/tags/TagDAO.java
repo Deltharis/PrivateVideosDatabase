@@ -20,4 +20,8 @@ public class TagDAO extends AbstractTagDAO<Tag> {
     public List<TagRanking> getPopularityCount() {
         return em.createNativeQuery("select tag.text text, count(*) countz from Tags tag inner join VideoTags videotag on tag.id = videotag.tagid where tag.person = 0 group by text order by countz desc, text asc", "TagRanking").getResultList();
     }
+
+    public void removeAll() {
+        em.createQuery("DELETE FROM Tag").executeUpdate();
+    }
 }

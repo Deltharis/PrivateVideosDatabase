@@ -20,7 +20,7 @@ public class AddTagWindow extends Window {
         this.presenter = presenter;
         setModal(true);
         final FormLayout form = new FormLayout();
-        TextField f = new TextField("Nazwa/Imie i nazwisko");
+        final TextField f = new TextField("Nazwa/Imie i nazwisko");
         f.addValidator(new StringLengthValidator("Pole nie moze byc puste!", 1, 25, false));
         form.addComponent(f, 0);
         final CheckBox checkBox = new CheckBox("Osoba");
@@ -41,6 +41,7 @@ public class AddTagWindow extends Window {
                     }
                     AbstractTag tag;
                     tag = checkBox.getValue() ? new Person() : new Tag();
+                    tag.setText(f.getValue());
                     presenter.saveTag(tag);
                     Notification.show("Changes committed!",
                             Notification.Type.TRAY_NOTIFICATION);

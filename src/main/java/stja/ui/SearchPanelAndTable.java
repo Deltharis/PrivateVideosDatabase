@@ -24,6 +24,7 @@ public class SearchPanelAndTable extends Panel implements View {
     private Button deleteButton;
     private Button editButton;
     private Button addTag;
+    private Button deleteTags;
     private FilterTable table;
     private Table tagRankingTable;
     private Table personRankingTable;
@@ -64,13 +65,24 @@ public class SearchPanelAndTable extends Panel implements View {
         crudLayout.addComponent(editButton);
         crudLayout.addComponent(addTag);
         crudLayout.addComponent(logoutButton);
+        deleteTags = new Button("Delete tags");
+        crudLayout.addComponent(deleteTags);
+        deleteTags.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                presenter.deleteTags();
+                refreshCount();
+                refreshTable();
+            }
+        });
+        deleteTags.setVisible(false);
         crudLayout.setSpacing(true);
         table = new FilterTable();
         table.setSizeFull();
         table.setFilterBarVisible(true);
         table.setContainerDataSource(videoItemContainer);
-        table.setVisibleColumns("id","title", "description", "url", "tags", "video_date", "timestamp");
-        table.setColumnHeaders(new String[] {"Id", "Tytuł", "Opis", "URL", "Tagi", "Data filmiku", "Data dodania"});
+        table.setVisibleColumns("id", "title", "description", "url", "tags", "people", "video_date", "timestamp");
+        table.setColumnHeaders(new String[]{"Id", "Tytuł", "Opis", "URL", "Tagi", "Tancerze", "Data filmiku", "Data dodania"});
         table.setColumnCollapsingAllowed(true);
         table.setColumnCollapsed("id", true);
         table.setColumnCollapsed("timestamp", true);
@@ -191,6 +203,11 @@ public class SearchPanelAndTable extends Panel implements View {
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         Subject currentUser = SecurityUtils.getSubject();
+        if (currentUser.isPermitted(Permissions.MANAGER)) {
+            deleteTags.setVisible(true);
+        } else {
+            deleteTags.setVisible(false);
+        }
         if (currentUser.isPermitted(Permissions.FILM_MANAGER)) {
             addButton.setVisible(true);
             deleteButton.setVisible(true);

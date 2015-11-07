@@ -1,6 +1,7 @@
 package stja.entities.video;
 
 
+import org.hibernate.annotations.Where;
 import stja.entities.tags.Person;
 import stja.entities.tags.Tag;
 
@@ -33,6 +34,7 @@ public class Video implements Serializable {
             @JoinColumn(name = "VideoId", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "TagId",
                     nullable = false, updatable = false)})
+    @Where(clause = "person = 0")
     private Set<Tag> tags;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -40,6 +42,7 @@ public class Video implements Serializable {
             @JoinColumn(name = "VideoId", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "TagId",
                     nullable = false, updatable = false)})
+    @Where(clause = "person = 1")
     private Set<Person> people;
 
     @Temporal(TemporalType.TIMESTAMP)

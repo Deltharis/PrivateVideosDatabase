@@ -35,6 +35,10 @@ public class SearchTablePresenter {
     public List<Tag> getAllTags() {
         return tagDAO.getAll();
     }
+
+    public List<Person> getAllPeople() {
+        return personDAO.getAll();
+    }
     public void delete(Video video){
         videoDAO.remove(video);
     }
@@ -65,6 +69,11 @@ public class SearchTablePresenter {
 
     public List<TagRanking> getPersonRanking() {
         return personDAO.getPopularityCount();
+    }
+
+    public void deleteTags() {
+        tagDAO.removeAll();
+        personDAO.removeAll();
     }
 
 
