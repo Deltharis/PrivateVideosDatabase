@@ -152,6 +152,7 @@ public class SearchPanelAndTable extends Panel implements View {
                         UI.getCurrent().addWindow(addWindow);
                     }
                     catch(Throwable e){
+                        e.printStackTrace();
                         Notification.show("WARNING", "Nope! " + e.getMessage() + " " + e.getCause().getMessage(), Notification.Type.WARNING_MESSAGE);
                     }
                 }
@@ -183,6 +184,8 @@ public class SearchPanelAndTable extends Panel implements View {
     private void refreshCount() {
         tagRankingItemContainer.removeAllItems();
         tagRankingItemContainer.addAll(presenter.getTagRanking());
+        personRankingItemContainer.removeAllItems();
+        personRankingItemContainer.addAll(presenter.getPersonRanking());
     }
 
     @Override
