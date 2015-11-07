@@ -10,7 +10,7 @@ import java.util.Set;
  * Created by Delth on 07.11.2015.
  */
 @SqlResultSetMapping(
-        name = "TagRanking",
+        name = "PersonRanking",
         classes = @ConstructorResult(
                 targetClass = TagRanking.class,
                 columns = {
