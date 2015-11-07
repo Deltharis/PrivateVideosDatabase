@@ -29,6 +29,9 @@ public class Video implements Serializable {
     @Column(name = "description", length = 500)
     private String description = "";
 
+    @Column(name = "core")
+    private boolean core;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "VideoTags", joinColumns = {
             @JoinColumn(name = "VideoId", nullable = false, updatable = false)},
@@ -99,6 +102,14 @@ public class Video implements Serializable {
 
     public void setPeople(Set<Person> people) {
         this.people = people;
+    }
+
+    public boolean isCore() {
+        return core;
+    }
+
+    public void setCore(boolean core) {
+        this.core = core;
     }
 
     public Date getTimestamp() {

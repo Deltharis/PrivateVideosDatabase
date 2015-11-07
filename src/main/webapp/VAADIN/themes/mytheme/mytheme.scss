@@ -25,5 +25,10 @@
 @mixin mytheme {
   @include valo;
 
+  .v-table-row.v-table-row-highlight,
+  .v-table-row-odd.v-table-row-highlight {
+    background-color: lightyellow;
+  }
+
   // Insert your own theme rules here
 }

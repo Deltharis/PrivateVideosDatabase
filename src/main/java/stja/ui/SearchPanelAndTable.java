@@ -4,6 +4,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.BaseTheme;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.tepi.filtertable.FilterTable;
@@ -81,15 +82,47 @@ public class SearchPanelAndTable extends Panel implements View {
         table.setSizeFull();
         table.setFilterBarVisible(true);
         table.setContainerDataSource(videoItemContainer);
-        table.setVisibleColumns("id", "title", "description", "url", "tags", "people", "video_date", "timestamp");
-        table.setColumnHeaders(new String[]{"Id", "Tytuł", "Opis", "URL", "Tagi", "Tancerze", "Data filmiku", "Data dodania"});
+        table.addGeneratedColumn("UrlButton", new CustomTable.ColumnGenerator() {
+            @Override
+            public Object generateCell(CustomTable customTable, Object itemId, Object columnId) {
+                Video video = (Video) itemId;
+                final Button b = new Button(video.getUrl());
+                b.setStyleName(BaseTheme.BUTTON_LINK);
+                b.addClickListener(new Button.ClickListener() {
+                    @Override
+                    public void buttonClick(Button.ClickEvent event) {
+                        getUI().getPage().open(b.getCaption(), "_blank");
+                    }
+                });
+                return b;
+            }
+        });
+        table.setVisibleColumns("id", "title", "description", "UrlButton", "tags", "people", "video_date", "timestamp", "core", "url");
+        table.setColumnHeaders(new String[]{"Id", "Tytuł", "Opis", "URL", "Tagi", "Tancerze", "Data filmiku", "Data dodania", "Repertuar", "URLtext"});
         table.setColumnCollapsingAllowed(true);
         table.setColumnCollapsed("id", true);
         table.setColumnCollapsed("timestamp", true);
+        table.setColumnCollapsed("core", true);
+        table.setColumnCollapsed("url", true);
+
         table.setImmediate(true);
         table.setSelectable(true);
         table.setMultiSelect(false);
         table.setSortEnabled(true);
+        table.setCellStyleGenerator(new CustomTable.CellStyleGenerator() {
+            @Override
+            public String getStyle(CustomTable customTable, Object itemId, Object propertyId) {
+                // Row style setting, not relevant in this example.
+                if (propertyId == null) {
+                    Video video = (Video) itemId;
+                    if (video.isCore()) {
+                        return "highlight";
+                    } else {
+                        return null;
+                    }
+                } else return null;
+            }
+        });
 
         refreshTable();
 

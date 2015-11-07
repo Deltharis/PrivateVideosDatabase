@@ -12788,3 +12788,7 @@ div.v-layout.v-horizontal.v-widget {
 	width: 19px;
 	overflow: hidden;
 }
+
+.mytheme .v-table-row.v-table-row-highlight, .mytheme .v-table-row-odd.v-table-row-highlight {
+	background-color: lightyellow;
+}
