@@ -1,5 +1,6 @@
-package stja.data_access;
+package stja.data_access.security;
 
+import stja.data_access.AbstractDAO;
 import stja.entities.user.Permission;
 
 import javax.ejb.Stateless;

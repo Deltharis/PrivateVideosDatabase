@@ -3,7 +3,7 @@ package stja.shiro_stuff;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.realm.jdbc.JdbcRealm;
-import stja.data_access.UserDAO;
+import stja.data_access.security.UserDAO;
 import stja.entities.user.User;
 
 import javax.naming.InitialContext;

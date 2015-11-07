@@ -1,9 +1,12 @@
 package stja.control;
 
-import stja.data_access.TagDAO;
-import stja.data_access.TagRanking;
-import stja.data_access.VideoDAO;
-import stja.entities.video.Tag;
+import stja.data_access.tags.PersonDAO;
+import stja.data_access.tags.TagDAO;
+import stja.data_access.tags.TagRanking;
+import stja.data_access.video.VideoDAO;
+import stja.entities.tags.AbstractTag;
+import stja.entities.tags.Person;
+import stja.entities.tags.Tag;
 import stja.entities.video.Video;
 
 import javax.ejb.Stateless;
@@ -22,6 +25,9 @@ public class SearchTablePresenter {
     @Inject
     private TagDAO tagDAO;
 
+    @Inject
+    private PersonDAO personDAO;
+
     public List<Video> getAllVideos(){
         return videoDAO.getAll();
     }
@@ -36,11 +42,29 @@ public class SearchTablePresenter {
     public void saveVideo(Video video){
         videoDAO.merge(video);
     }
-    public void saveTag(Tag tag){
+
+    public void saveTag(AbstractTag tag) {
+        if (tag instanceof Person) {
+            savePerson((Person) tag);
+        } else {
+            saveTag((Tag) tag);
+        }
+    }
+
+    private void savePerson(Person person) {
+        personDAO.merge(person);
+    }
+
+    private void saveTag(Tag tag) {
         tagDAO.merge(tag);
     }
-    public List<TagRanking> getRanking(){
+
+    public List<TagRanking> getTagRanking() {
         return tagDAO.getPopularityCount();
+    }
+
+    public List<TagRanking> getPersonRanking() {
+        return personDAO.getPopularityCount();
     }
 
 

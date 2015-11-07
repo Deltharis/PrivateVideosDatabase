@@ -1,11 +1,12 @@
-package stja.data_access;
+package stja.data_access.video;
 
+import stja.data_access.AbstractDAO;
 import stja.entities.video.Video;
 
 import javax.ejb.Stateless;
 
 /**
- * Created by Michal on 2015-10-17.
+ * Created by Delth on 17.10.2015.
  */
 @Stateless
 public class VideoDAO extends AbstractDAO<Video> {

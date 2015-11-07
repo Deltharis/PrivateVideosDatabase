@@ -1,8 +1,9 @@
-package stja.data_access;
+package stja.data_access.security;
 
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Sha256Hash;
+import stja.data_access.AbstractDAO;
 import stja.entities.user.Role;
 import stja.entities.user.User;
 

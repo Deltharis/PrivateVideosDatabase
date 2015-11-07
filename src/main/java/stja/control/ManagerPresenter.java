@@ -1,8 +1,8 @@
 package stja.control;
 
-import stja.data_access.PermissionDAO;
-import stja.data_access.RoleDAO;
-import stja.data_access.UserDAO;
+import stja.data_access.security.PermissionDAO;
+import stja.data_access.security.RoleDAO;
+import stja.data_access.security.UserDAO;
 import stja.entities.user.Permission;
 import stja.entities.user.Role;
 import stja.entities.user.User;

@@ -1,4 +1,4 @@
-package stja.data_access;
+package stja.data_access.tags;
 
 /**
  * Created by Delth on 25.10.2015.

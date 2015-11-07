@@ -6,7 +6,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.*;
 import stja.control.SearchTablePresenter;
-import stja.entities.video.Tag;
+import stja.entities.tags.Tag;
 import stja.entities.video.Video;
 
 import java.util.Date;
@@ -16,8 +16,8 @@ import java.util.Date;
  */
 public class AddEditVideoWindow extends Window {
 
-    private SearchTablePresenter presenter;
     BeanItem<Video> video;
+    private SearchTablePresenter presenter;
 
     public AddEditVideoWindow(final SearchTablePresenter presenter, Video vid){
         VerticalLayout mainLayout = new VerticalLayout();
@@ -45,7 +45,7 @@ public class AddEditVideoWindow extends Window {
         for(Tag tag : presenter.getAllTags()){
             mFeaturesTwinColSelect.addItem(tag);
         }
-
+        mFeaturesTwinColSelect.setValue(video.getBean().getTags());
         mFeaturesTwinColSelect.setImmediate(true);
         mFeaturesTwinColSelect.setNullSelectionAllowed(true);
         mFeaturesTwinColSelect.setMultiSelect(true);

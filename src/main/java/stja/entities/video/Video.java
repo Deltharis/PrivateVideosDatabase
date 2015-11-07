@@ -1,13 +1,16 @@
 package stja.entities.video;
 
 
+import stja.entities.tags.Person;
+import stja.entities.tags.Tag;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
 /**
- * Created by Michal on 2015-10-17.
+ * Created by Delth on 17.10.2015.
  */
 @Entity
 @Table(name = "Videos")
@@ -31,6 +34,13 @@ public class Video implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "TagId",
                     nullable = false, updatable = false)})
     private Set<Tag> tags;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "VideoTags", joinColumns = {
+            @JoinColumn(name = "VideoId", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "TagId",
+                    nullable = false, updatable = false)})
+    private Set<Person> people;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "video_date")
@@ -78,6 +88,14 @@ public class Video implements Serializable {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public Set<Person> getPeople() {
+        return people;
+    }
+
+    public void setPeople(Set<Person> people) {
+        this.people = people;
     }
 
     public Date getTimestamp() {

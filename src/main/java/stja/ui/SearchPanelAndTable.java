@@ -9,11 +9,11 @@ import org.apache.shiro.subject.Subject;
 import org.tepi.filtertable.FilterTable;
 import stja.control.Permissions;
 import stja.control.SearchTablePresenter;
-import stja.data_access.TagRanking;
+import stja.data_access.tags.TagRanking;
 import stja.entities.video.Video;
 
 /**
- * Created by Michal on 2015-10-17.
+ * Created by Delth on 17.10.2015.
  */
 public class SearchPanelAndTable extends Panel implements View {
 
@@ -25,9 +25,11 @@ public class SearchPanelAndTable extends Panel implements View {
     private Button editButton;
     private Button addTag;
     private FilterTable table;
-    private Table table2;
-    private BeanItemContainer<Video> container = new BeanItemContainer<Video>(Video.class);
-    private BeanItemContainer<TagRanking> container2 = new BeanItemContainer<TagRanking>(TagRanking.class);
+    private Table tagRankingTable;
+    private Table personRankingTable;
+    private BeanItemContainer<Video> videoItemContainer = new BeanItemContainer<Video>(Video.class);
+    private BeanItemContainer<TagRanking> tagRankingItemContainer = new BeanItemContainer<TagRanking>(TagRanking.class);
+    private BeanItemContainer<TagRanking> personRankingItemContainer = new BeanItemContainer<TagRanking>(TagRanking.class);
 
     public SearchPanelAndTable(SearchTablePresenter presenter) { //presenter should be an interface, but fuck it
         this.presenter = presenter;
@@ -66,7 +68,7 @@ public class SearchPanelAndTable extends Panel implements View {
         table = new FilterTable();
         table.setSizeFull();
         table.setFilterBarVisible(true);
-        table.setContainerDataSource(container);
+        table.setContainerDataSource(videoItemContainer);
         table.setVisibleColumns("id","title", "description", "url", "tags", "video_date", "timestamp");
         table.setColumnHeaders(new String[] {"Id", "Tytuł", "Opis", "URL", "Tagi", "Data filmiku", "Data dodania"});
         table.setColumnCollapsingAllowed(true);
@@ -79,18 +81,30 @@ public class SearchPanelAndTable extends Panel implements View {
 
         refreshTable();
 
-        table2 = new Table();
-        table2.setCaption("Najpopularniejsze tagi");
-        table2.setContainerDataSource(container2);
-        table2.setVisibleColumns("text", "countz");
-        table2.setColumnHeaders(new String[] {"Tag", "Popularność"});
-        table2.setImmediate(true);
-        table2.setSelectable(false);
+        tagRankingTable = new Table();
+        tagRankingTable.setCaption("Najpopularniejsze tagi");
+        tagRankingTable.setContainerDataSource(tagRankingItemContainer);
+        tagRankingTable.setVisibleColumns("text", "countz");
+        tagRankingTable.setColumnHeaders(new String[]{"Tag", "Popularność"});
+        tagRankingTable.setImmediate(true);
+        tagRankingTable.setSelectable(false);
+
+        personRankingTable = new Table();
+        personRankingTable.setCaption("Najaktywniejsi tancerze");
+        personRankingTable.setContainerDataSource(personRankingItemContainer);
+        personRankingTable.setVisibleColumns("text", "countz");
+        personRankingTable.setColumnHeaders(new String[]{"Osoba", "Aktywność"});
+        personRankingTable.setImmediate(true);
+        personRankingTable.setSelectable(false);
 
         refreshCount();
         mainLayout.addComponent(crudLayout);
         mainLayout.addComponent(table);
-        mainLayout.addComponent(table2);
+        HorizontalLayout rankings = new HorizontalLayout();
+        rankings.setSpacing(true);
+        rankings.addComponent(tagRankingTable);
+        rankings.addComponent(personRankingTable);
+        mainLayout.addComponent(rankings);
     }
 
     private void addListeners() {
@@ -162,13 +176,13 @@ public class SearchPanelAndTable extends Panel implements View {
     }
 
     private void refreshTable(){
-        container.removeAllItems();
-        container.addAll(presenter.getAllVideos());
+        videoItemContainer.removeAllItems();
+        videoItemContainer.addAll(presenter.getAllVideos());
     }
 
     private void refreshCount() {
-        container2.removeAllItems();
-        container2.addAll(presenter.getRanking());
+        tagRankingItemContainer.removeAllItems();
+        tagRankingItemContainer.addAll(presenter.getTagRanking());
     }
 
     @Override
