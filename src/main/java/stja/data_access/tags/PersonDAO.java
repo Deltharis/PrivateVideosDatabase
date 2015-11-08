@@ -3,6 +3,7 @@ package stja.data_access.tags;
 import stja.entities.tags.Person;
 
 import javax.ejb.Stateless;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -23,5 +24,19 @@ public class PersonDAO extends AbstractTagDAO<Person> {
 
     public void removeAll() {
         em.createQuery("DELETE FROM Person").executeUpdate();
+    }
+
+    @Override
+    public List<Person> getAll() {
+        List<Person> list = super.getAll();
+        list.sort(new Comparator<Person>() {
+            @Override
+            public int compare(Person o1, Person o2) {
+                String surnameo1 = o1.getText().split(" ")[1];
+                String surnameo2 = o2.getText().split(" ")[1];
+                return surnameo1.compareTo(surnameo2);
+            }
+        });
+        return list;
     }
 }
