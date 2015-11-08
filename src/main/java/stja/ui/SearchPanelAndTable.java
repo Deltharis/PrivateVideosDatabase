@@ -246,11 +246,13 @@ public class SearchPanelAndTable extends Panel implements View {
             deleteButton.setVisible(true);
             editButton.setVisible(true);
             addTag.setVisible(true);
+            table.setSelectable(true);
         } else {
             addButton.setVisible(false);
             deleteButton.setVisible(false);
             editButton.setVisible(false);
             addTag.setVisible(false);
+            table.setSelectable(false);
         }
         refreshTable();
         refreshCount();

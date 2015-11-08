@@ -15,4 +15,8 @@ public class VideoDAO extends AbstractDAO<Video> {
     protected Class<Video> getEntityClass() {
         return Video.class;
     }
+
+    public void testUpdate() {
+        em.createNativeQuery("UPDATE Videos set core = 0").executeUpdate();
+    }
 }

@@ -41,13 +41,15 @@ public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+        getPage().setTitle("STJA Baza Filmików");
         mainLayout = new VerticalLayout();
         setContent(mainLayout);
-
+        //searchTablePresenter.testUpdateValues();
         initComponents();
         navigator = new Navigator(this, this);
 
         navigator.setErrorView(new ErrorView());
+
 
         /*managerPresenter.createUser(
                 "admin",

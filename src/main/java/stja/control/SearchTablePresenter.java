@@ -76,5 +76,9 @@ public class SearchTablePresenter {
         personDAO.removeAll();
     }
 
+    public void testUpdateValues() {
+        videoDAO.testUpdate();
+    }
+
 
 }
