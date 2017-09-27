@@ -28,7 +28,6 @@ public class SearchPanelAndTable extends Panel implements View {
     private Button deleteTags;
     private FilterTable table;
     private Table tagRankingTable;
-    private Table personRankingTable;
     private BeanItemContainer<Video> videoItemContainer = new BeanItemContainer<Video>(Video.class);
     private BeanItemContainer<TagRanking> tagRankingItemContainer = new BeanItemContainer<TagRanking>(TagRanking.class);
     private BeanItemContainer<TagRanking> personRankingItemContainer = new BeanItemContainer<TagRanking>(TagRanking.class);
@@ -134,21 +133,12 @@ public class SearchPanelAndTable extends Panel implements View {
         tagRankingTable.setImmediate(true);
         tagRankingTable.setSelectable(false);
 
-        personRankingTable = new Table();
-        personRankingTable.setCaption("Najaktywniejsi tancerze");
-        personRankingTable.setContainerDataSource(personRankingItemContainer);
-        personRankingTable.setVisibleColumns("text", "countz");
-        personRankingTable.setColumnHeaders(new String[]{"Osoba", "Aktywność"});
-        personRankingTable.setImmediate(true);
-        personRankingTable.setSelectable(false);
-
         refreshCount();
         mainLayout.addComponent(crudLayout);
         mainLayout.addComponent(table);
         HorizontalLayout rankings = new HorizontalLayout();
         rankings.setSpacing(true);
         rankings.addComponent(tagRankingTable);
-        rankings.addComponent(personRankingTable);
         mainLayout.addComponent(rankings);
     }
 
